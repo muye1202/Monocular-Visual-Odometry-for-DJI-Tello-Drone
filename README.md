@@ -11,6 +11,17 @@ equation for the essential matrix that contains the camera rotation and translat
 representing the pose transformation between the two frames. Next, the transformation matrices
 will be stitched together to form the entire camera trajectory
 
+## Results
+Real-time visual odometry on DJI Tello Drone
+
+
+https://github.com/muye1202/Monocular-Visual-Odometry-for-DJI-Tello-Drone/assets/112987403/bc1caa46-e5eb-42e7-90ea-1e7ab73334a6
+
+
+The following are the trajectories obtained from real deployment on DJI Tello Drone:
+![line_1turn_VO_ORB](https://github.com/muye1202/Monocular-Visual-Odometry-for-DJI-Tello-Drone/assets/112987403/cb05911d-2038-4fc3-a116-3ae319182393)
+![line_1turn_VO_ShiTom](https://github.com/muye1202/Monocular-Visual-Odometry-for-DJI-Tello-Drone/assets/112987403/de288a09-934b-4071-9ce5-c46edb654935)
+
 
 ## Camera Calibration
 
