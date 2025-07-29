@@ -1,16 +1,14 @@
+import os
 import cv2
 import numpy as np
-import sys
-sys.path.append("/home/muyejia1202/ComputerVision")
 import matplotlib.pyplot as plt
 from collections import defaultdict
 import g2o
 from scipy.spatial.transform import Rotation as sci_rot
 
 
-# KITTI_path = "/home/muyejia1202/ComputerVision/project/VO_test_images/dataset/sequences/"
-KITTI_path = "/home/muyejia1202/Spring_2023/ComputerVision/project/VO_test_images/KITTI_sequence_1/"
-# KITTI_gt_path = "/home/muyejia1202/ComputerVision/project/VO_test_images/dataset/poses/"
+KITTI_path = os.getenv("KITTI_PATH", os.path.join("data", "KITTI_sequence_1"))
+# KITTI_gt_path = os.getenv("KITTI_GT_PATH", "/path/to/poses/")
 
 optimizer = g2o.SparseOptimizer()
 solver = g2o.BlockSolverSE3(g2o.LinearSolverEigenSE3())
@@ -23,7 +21,8 @@ def load_drone_images():
         # the names of the images
         img_name = str(i)
         img_name = img_name + '.png'
-        path_img = "/home/muyejia1202/ComputerVision/project/VO_test_images/drone_capture/" + img_name
+        drone_dir = os.getenv("DRONE_IMAGE_DIR", os.path.join("data", "drone_capture"))
+        path_img = os.path.join(drone_dir, img_name)
         img = cv2.imread(path_img)
         if img is not None:
             cp_img = np.zeros_like(img)
@@ -41,7 +40,7 @@ def load_dataset(data_size):
             placeholder_zeros += '0'
 
         img_name = placeholder_zeros + img_name + '.png'
-        img_path = KITTI_path + "image_l/" + img_name
+        img_path = os.path.join(KITTI_path, "image_l", img_name)
         # img_path = KITTI_path + "00/image_0/" + img_name
         img = cv2.imread(img_path)
         # img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -243,7 +242,7 @@ def draw_tracks(old_pts, new_pts, mask, frame):
 
 def plot_KITTI(ba_flag=False, draw_track=False):
     # Camera matrix for KITTI Sequence
-    calib_path = KITTI_path + "calib.txt"
+    calib_path = os.path.join(KITTI_path, "calib.txt")
     calib_arr = np.loadtxt(calib_path, dtype=float)
     cam1 = calib_arr[0, :].reshape((3,4))
     cam1 = cam1[:, 0:3]
@@ -251,7 +250,7 @@ def plot_KITTI(ba_flag=False, draw_track=False):
     cam2 = cam2[:, 0:3]
 
     # Get the Ground Truth trajectory
-    gt_path = KITTI_path + "poses.txt"
+    gt_path = os.path.join(KITTI_path, "poses.txt")
     gt_arr = np.loadtxt(fname=gt_path, dtype=float)
     data_size = gt_arr.shape[0]
     # data_size = 300 # int(data_size * 0.01)

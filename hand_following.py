@@ -5,14 +5,19 @@ https://github.com/cansik/yolo-hand-detection.git
 """
 
 
+import os
 import djitellopy as tello
 import cv2
 import numpy as np
 from yolo_hand_detector.yolo import YOLO
 
 
-path = "/home/muyejia1202/ComputerVision/project/yolo_hand_detector/"
-yolo_model = YOLO(path + "models/cross-hands-tiny-prn.cfg", path + "models/cross-hands-tiny-prn.weights", ["hand"])
+base = os.getenv("YOLO_HAND_MODEL_DIR", "yolo_hand_detector")
+yolo_model = YOLO(
+    os.path.join(base, "models", "cross-hands-tiny-prn.cfg"),
+    os.path.join(base, "models", "cross-hands-tiny-prn.weights"),
+    ["hand"],
+)
 yolo_model.size = 416
 yolo_model.confidence = 0.5
 hand_count = 1

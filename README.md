@@ -37,3 +37,17 @@ contains the intrinsic parameters of the camera.
 on the KITTI dataset, one can choose to enable the bundle-adjustment.
 
 2. To test the VO on the drone, the user need to record images using the drone and then perform the odometry offline by running `python3 visual_odometry.py` with `plot_drone` function enabled.
+
+## Configuration
+
+The scripts rely on a few environment variables for locating datasets and models. Defaults point to
+folders inside the `data/` directory relative to the project root. The following variables can be
+defined to override the defaults:
+
+```
+KITTI_PATH             Path to the KITTI dataset sequence (default: data/KITTI_sequence_1)
+DRONE_IMAGE_DIR        Directory with captured drone images (default: data/drone_capture)
+CALIBRATION_DIR        Directory for saving calibration photos (default: data/drone_straight_line)
+CALIBRATION_IMAGES_DIR Directory containing calibration images (default: data/calibration_images)
+YOLO_HAND_MODEL_DIR    Base directory of the hand detection model (default: yolo_hand_detector)
+```
