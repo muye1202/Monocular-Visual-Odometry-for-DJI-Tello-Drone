@@ -1,3 +1,4 @@
+import os
 import cv2
 import numpy as np
 from djitellopy import tello
@@ -15,7 +16,8 @@ def take_calibration_photos():
         img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         cali_img_list.append(img)
         cv2.imshow("drone_view", img)
-        path_img = "/home/muyejia1202/ComputerVision/project/VO_test_images/drone_straight_line/" + str(len(cali_img_list)) + ".png"
+        save_dir = os.getenv("CALIBRATION_DIR", os.path.join("data", "drone_straight_line"))
+        path_img = os.path.join(save_dir, f"{len(cali_img_list)}.png")
         cv2.imwrite(path_img, img)
         cv2.waitKey(100)
 
@@ -29,7 +31,8 @@ def calibrate_camera():
     objp[0,:,:2] = 0.051 * np.mgrid[0:CHECKER_BOARD[0], 0:CHECKER_BOARD[1]].T.reshape(-1, 2)
 
     for i in range(9):
-        img_path = "/home/muyejia1202/ComputerVision/project/calibration_images/" + str(i+1) + ".jpg"
+        calib_dir = os.getenv("CALIBRATION_IMAGES_DIR", os.path.join("data", "calibration_images"))
+        img_path = os.path.join(calib_dir, f"{i+1}.jpg")
         img = cv2.imread(img_path)
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         ret, corners = cv2.findChessboardCorners(gray, CHECKER_BOARD, cv2.CALIB_CB_ADAPTIVE_THRESH + cv2.CALIB_CB_FAST_CHECK + cv2.CALIB_CB_NORMALIZE_IMAGE)
@@ -37,7 +40,7 @@ def calibrate_camera():
         if ret:
             refined_corner = cv2.cornerSubPix(gray, corners, (11,11), zeroZone=(-1,-1), criteria=criteria)
             # with_corner = cv2.drawChessboardCorners(img, CHECKER_BOARD, refined_corner, ret)
-            # cv2.imwrite("/home/muyejia1202/ComputerVision/project/corner_detection/" + str(i+1) + "_trial2.jpg", with_corner)
+            # cv2.imwrite(os.path.join("data", "corner_detection", f"{i+1}_trial2.jpg"), with_corner)
 
             img_coord.append(refined_corner)
             real_coord.append(objp)

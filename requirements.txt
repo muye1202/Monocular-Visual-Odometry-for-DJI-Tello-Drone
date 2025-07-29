@@ -1,0 +1,7 @@
+opencv-python
+numpy
+matplotlib
+scipy
+djitellopy
+pyg2o
+yolo-hand-detection
